@@ -74,6 +74,10 @@ export default function AppSidebar() {
     console.log("Switching tenant to:", _tenantId);
   };
 
+  const signOut = () => {
+    router.push("/login");
+  };
+
   const activeTenant = tenants[0];
 
   React.useEffect(() => {
@@ -204,7 +208,7 @@ export default function AppSidebar() {
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={signOut}>
                   <IconLogout className="mr-2 h-4 w-4" />
                 </DropdownMenuItem>
               </DropdownMenuContent>

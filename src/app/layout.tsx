@@ -68,7 +68,7 @@ export default async function RootLayout({
             enableColorScheme
           >
             <Providers activeThemeValue={activeThemeValue as string}>
-              <Toaster />
+              <Toaster position="top-right" duration={3000} />
               {children}
             </Providers>
           </ThemeProvider>
