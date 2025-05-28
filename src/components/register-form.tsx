@@ -61,7 +61,9 @@ export default function RegisterForm() {
                 placeholder="Enter your username"
                 className={cn(
                   "mt-1 w-full",
-                  errors.username ? "border-red-500" : ""
+                  errors.username
+                    ? "border-red-500 focus:border-red-500 focus-visible:border-ring focus-visible:ring-red-500"
+                    : ""
                 )}
               />
               {errors.username && (
@@ -79,7 +81,9 @@ export default function RegisterForm() {
                 placeholder="Enter your email"
                 className={cn(
                   "mt-1 w-full",
-                  errors.email ? "border-red-500" : ""
+                  errors.email
+                    ? "border-red-500 focus:border-red-500 focus-visible:border-ring focus-visible:ring-red-500"
+                    : ""
                 )}
               />
               {errors.email && (
@@ -97,7 +101,9 @@ export default function RegisterForm() {
                 placeholder="Enter your password"
                 className={cn(
                   "mt-1 w-full",
-                  errors.password ? "border-red-500" : ""
+                  errors.password
+                    ? "border-red-500 focus:border-red-500 focus-visible:border-ring focus-visible:ring-red-500"
+                    : ""
                 )}
               />
               {errors.password && (

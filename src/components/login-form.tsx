@@ -70,7 +70,9 @@ export default function LoginForm() {
                 placeholder="Enter your username"
                 className={cn(
                   "mt-1 w-full",
-                  errors.username ? "border-red-500" : ""
+                  errors.username
+                    ? "border-red-500 focus:border-red-500 focus-visible:border-ring focus-visible:ring-red-500"
+                    : ""
                 )}
               />
               {errors.username && (
@@ -88,7 +90,9 @@ export default function LoginForm() {
                 placeholder="Enter your password"
                 className={cn(
                   "mt-1 w-full",
-                  errors.password ? "border-red-500" : ""
+                  errors.password
+                    ? "border-red-500 focus:border-red-500 focus-visible:border-ring focus-visible:ring-red-500"
+                    : ""
                 )}
               />
               {errors.password && (
