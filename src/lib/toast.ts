@@ -9,7 +9,7 @@ export function successToast(message: string) {
 }
 
 export function errorToast(message: string) {
-  return toast.success(message, {
+  return toast.error(message, {
     style: {
       color: "red",
     },
@@ -17,7 +17,7 @@ export function errorToast(message: string) {
 }
 
 export function infoToast(message: string) {
-  return toast(message, {
+  return toast.info(message, {
     style: {
       color: "blue",
     },

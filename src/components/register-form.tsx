@@ -3,15 +3,21 @@
 import animationData from "@/components/lottie/animation.json";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { successToast } from "@/lib/toast";
-import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Lottie from "lottie-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "./ui/form";
 
 const formSchema = z.object({
   username: z.string().nonempty("Username is required").max(50),
@@ -28,13 +34,14 @@ export default function RegisterForm() {
   const router = useRouter();
   const form = useForm<RegisterRequest>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      username: "",
+      email: "",
+      password: "",
+    },
   });
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = form;
+  const { handleSubmit } = form;
 
   const onSubmit = (data: RegisterRequest) => {
     console.log("Register data:", data);
@@ -48,74 +55,69 @@ export default function RegisterForm() {
         {/* Left Side: Register Form */}
         <div className="w-full md:w-1/2 bg-white p-8 flex flex-col items-center justify-center">
           <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="space-y-4 w-full max-w-sm"
-          >
-            <div>
-              <Label htmlFor="username">Username</Label>
-              <Input
-                {...register("username")}
-                id="username"
-                type="text"
-                placeholder="Enter your username"
-                className={cn(
-                  "mt-1 w-full",
-                  errors.username
-                    ? "border-red-500 focus:border-red-500 focus-visible:border-ring focus-visible:ring-red-500"
-                    : ""
-                )}
-              />
-              {errors.username && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.username.message}
-                </p>
-              )}
-            </div>
-            <div>
-              <Label htmlFor="email">Email</Label>
-              <Input
-                {...register("email")}
-                id="email"
-                type="email"
-                placeholder="Enter your email"
-                className={cn(
-                  "mt-1 w-full",
-                  errors.email
-                    ? "border-red-500 focus:border-red-500 focus-visible:border-ring focus-visible:ring-red-500"
-                    : ""
-                )}
-              />
-              {errors.email && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.email.message}
-                </p>
-              )}
-            </div>
-            <div>
-              <Label htmlFor="password">Password</Label>
-              <Input
-                {...register("password")}
-                id="password"
-                type="password"
-                placeholder="Enter your password"
-                className={cn(
-                  "mt-1 w-full",
-                  errors.password
-                    ? "border-red-500 focus:border-red-500 focus-visible:border-ring focus-visible:ring-red-500"
-                    : ""
-                )}
-              />
-              {errors.password && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.password.message}
-                </p>
-              )}
-            </div>
-            <Button type="submit" className="w-full">
-              Register
-            </Button>
-          </form>
+          <Form {...form}>
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="space-y-4 w-full max-w-sm"
+            >
+              <div>
+                <FormField
+                  control={form.control}
+                  name="username"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Username</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Enter your username" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div>
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Enter your email"
+                          type="email"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div>
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Enter your password"
+                          type="password"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <Button type="submit" className="w-full">
+                Register
+              </Button>
+            </form>
+          </Form>
           <p className="mt-4 text-center text-sm text-gray-600">
             Already have an account?{" "}
             <Link href="/login" className="text-blue-600 hover:underline">

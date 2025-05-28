@@ -3,15 +3,22 @@
 import animationData from "@/components/lottie/animation.json";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { successToast } from "@/lib/toast";
-import { cn } from "@/lib/utils";
+import { errorToast, successToast } from "@/lib/toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Lottie from "lottie-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "./ui/form";
+import { authUser } from "@/constants/data";
 
 const formSchema = z.object({
   username: z.string().nonempty("Username is required").max(50),
@@ -24,21 +31,26 @@ export default function LoginForm() {
   const router = useRouter();
   const form = useForm<LoginRequest>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      username: "",
+      password: "",
+    },
   });
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch,
-  } = form;
+  const { handleSubmit, watch } = form;
 
   const username = watch("username");
 
   function onSubmit(data: LoginRequest) {
-    console.log("Login data:", data);
+    if (
+      data.username !== authUser.username ||
+      data.password !== authUser.password
+    ) {
+      errorToast("Invalid username or password");
+      return;
+    }
     successToast("Login successful!");
-    router.push("/dashboard");
+    router.replace("/dashboard/overview");
   }
 
   return (
@@ -57,54 +69,50 @@ export default function LoginForm() {
           <h2 className="text-2xl font-bold mb-6 text-center">
             Welcome{username && <span>, {username}</span>}!
           </h2>
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="space-y-4 w-full max-w-sm"
-          >
-            <div>
-              <Label htmlFor="username">Username</Label>
-              <Input
-                {...register("username")}
-                id="username"
-                type="text"
-                placeholder="Enter your username"
-                className={cn(
-                  "mt-1 w-full",
-                  errors.username
-                    ? "border-red-500 focus:border-red-500 focus-visible:border-ring focus-visible:ring-red-500"
-                    : ""
-                )}
-              />
-              {errors.username && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.username.message}
-                </p>
-              )}
-            </div>
-            <div>
-              <Label htmlFor="password">Password</Label>
-              <Input
-                {...register("password")}
-                id="password"
-                type="password"
-                placeholder="Enter your password"
-                className={cn(
-                  "mt-1 w-full",
-                  errors.password
-                    ? "border-red-500 focus:border-red-500 focus-visible:border-ring focus-visible:ring-red-500"
-                    : ""
-                )}
-              />
-              {errors.password && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.password.message}
-                </p>
-              )}
-            </div>
-            <Button type="submit" className="w-full">
-              Login
-            </Button>
-          </form>
+          <Form {...form}>
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="space-y-4 w-full max-w-sm"
+            >
+              <div>
+                <FormField
+                  control={form.control}
+                  name="username"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Username</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Enter your username" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div>
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Enter your password"
+                          type="password"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <Button type="submit" className="w-full">
+                Login
+              </Button>
+            </form>
+          </Form>
           <p className="mt-4 text-center text-sm text-gray-600">
             Don&apos;t have an account?{" "}
             <Link href="/register" className="text-blue-600 hover:underline">

@@ -1,4 +1,9 @@
-import { NavItem } from "@/types";
+import { AppNavItem } from "@/types";
+
+export const authUser = {
+  username: "admin",
+  password: "admin123",
+};
 
 export type Product = {
   photo_url: string;
@@ -12,51 +17,64 @@ export type Product = {
 };
 
 //Info: The following data is used for the sidebar navigation and Cmd K bar.
-export const navItems: NavItem[] = [
+export const appNavItems: AppNavItem[] = [
   {
-    title: "Dashboard",
-    url: "/dashboard/overview",
-    icon: "dashboard",
-    isActive: false,
-    shortcut: ["d", "d"],
-    items: [], // Empty array as there are no child items for Dashboard
-  },
-  {
-    title: "Product",
-    url: "/dashboard/product",
-    icon: "product",
-    shortcut: ["p", "p"],
-    isActive: false,
-    items: [], // No child items
-  },
-  {
-    title: "Account",
-    url: "#", // Placeholder as there is no direct link for the parent
-    icon: "billing",
-    isActive: true,
-
-    items: [
+    section: "Overview",
+    navItems: [
       {
-        title: "Profile",
-        url: "/dashboard/profile",
-        icon: "userPen",
-        shortcut: ["m", "m"],
-      },
-      {
-        title: "Login",
-        shortcut: ["l", "l"],
-        url: "/",
-        icon: "login",
+        title: "Dashboard",
+        url: "/dashboard/overview",
+        icon: "dashboard",
+        isActive: false,
+        shortcut: ["d", "d"],
+        items: [], // Empty array as there are no child items for Dashboard
       },
     ],
   },
   {
-    title: "Kanban",
-    url: "/dashboard/kanban",
-    icon: "kanban",
-    shortcut: ["k", "k"],
-    isActive: false,
-    items: [], // No child items
+    section: "Reporting",
+    navItems: [
+      {
+        title: "Transaction Report",
+        url: "/report/transaction",
+        icon: "lockCog",
+        isActive: false,
+        shortcut: ["r", "t"],
+        items: [], // Empty array as there are no child items for Dashboard
+      },
+    ],
+  },
+  {
+    section: "Settings",
+    navItems: [
+      {
+        title: "System Setup",
+        url: "#", // Placeholder as there is no direct link for the parent
+        icon: "settings",
+        isActive: true,
+
+        items: [
+          {
+            title: "Permission",
+            url: "/dashboard/permission",
+            icon: "userPen",
+            shortcut: ["d", "p"],
+          },
+          {
+            title: "Role",
+            url: "/dashboard/role",
+            icon: "login",
+            shortcut: ["d", "r"],
+          },
+          {
+            title: "User",
+            url: "/dashboard/user",
+            icon: "user",
+            shortcut: ["d", "u"],
+          },
+        ],
+      },
+    ],
   },
 ];
 

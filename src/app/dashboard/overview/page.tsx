@@ -1,3 +1,3 @@
 export default function Page() {
-  return <h1>Overview Page</h1>;
+  return <h1 className="text-center">Overview</h1>;
 }
