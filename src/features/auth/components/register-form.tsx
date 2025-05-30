@@ -3,7 +3,7 @@
 import animationData from "@/components/lottie/animation.json";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { errorToast, successToast } from "@/lib/toast";
+import { successToast } from "@/lib/toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Lottie from "lottie-react";
 import Link from "next/link";
@@ -17,58 +17,44 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "./ui/form";
-import { authUser } from "@/constants/data";
+} from "@/components/ui/form";
 
 const formSchema = z.object({
   username: z.string().nonempty("Username is required").max(50),
+  email: z
+    .string()
+    .email("Invalid email address")
+    .nonempty("Email is required"),
   password: z.string().min(8, "Password must be at least 8 characters"),
 });
 
-type LoginRequest = z.infer<typeof formSchema>;
+type RegisterRequest = z.infer<typeof formSchema>;
 
-export default function LoginForm() {
+export default function RegisterForm() {
   const router = useRouter();
-  const form = useForm<LoginRequest>({
+  const form = useForm<RegisterRequest>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       username: "",
+      email: "",
       password: "",
     },
   });
 
-  const { handleSubmit, watch } = form;
+  const { handleSubmit } = form;
 
-  const username = watch("username");
-
-  function onSubmit(data: LoginRequest) {
-    if (
-      data.username !== authUser.username ||
-      data.password !== authUser.password
-    ) {
-      errorToast("Invalid username or password");
-      return;
-    }
-    successToast("Login successful!");
-    router.replace("/dashboard/overview");
-  }
+  const onSubmit = (data: RegisterRequest) => {
+    console.log("Register data:", data);
+    successToast("Registration successful!");
+    router.push("/login");
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="flex w-full max-w-4xl shadow-lg rounded-lg overflow-hidden">
-        {/* Left Side: Lottie Animation */}
-        <div className="w-1/2 bg-blue-600 p-8 hidden md:block">
-          <Lottie
-            animationData={animationData}
-            loop={true}
-            className="w-full h-full"
-          />
-        </div>
-        {/* Right Side: Login Form */}
+        {/* Left Side: Register Form */}
         <div className="w-full md:w-1/2 bg-white p-8 flex flex-col items-center justify-center">
-          <h2 className="text-2xl font-bold mb-6 text-center">
-            Welcome{username && <span>, {username}</span>}!
-          </h2>
+          <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
           <Form {...form}>
             <form
               onSubmit={handleSubmit(onSubmit)}
@@ -83,6 +69,25 @@ export default function LoginForm() {
                       <FormLabel>Username</FormLabel>
                       <FormControl>
                         <Input placeholder="Enter your username" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div>
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Enter your email"
+                          type="email"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -109,16 +114,24 @@ export default function LoginForm() {
                 />
               </div>
               <Button type="submit" className="w-full">
-                Login
+                Register
               </Button>
             </form>
           </Form>
           <p className="mt-4 text-center text-sm text-gray-600">
-            Don&apos;t have an account?{" "}
-            <Link href="/register" className="text-blue-600 hover:underline">
-              Register
+            Already have an account?{" "}
+            <Link href="/login" className="text-blue-600 hover:underline">
+              Login
             </Link>
           </p>
+        </div>
+        {/* Right Side: SVG Animation */}
+        <div className="w-1/2 bg-blue-600 p-8 hidden md:block">
+          <Lottie
+            animationData={animationData}
+            loop={true}
+            className="w-full h-full"
+          />
         </div>
       </div>
     </div>
