@@ -5,6 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { IconPlus } from "@tabler/icons-react";
 import Link from "next/link";
+import UserListPage from "@/features/users/components/user-list-page";
 
 export const metadata = {
   title: "Dashboard: Users",
@@ -27,6 +28,7 @@ export default async function Page() {
           </Link>
         </div>
         <Separator />
+        <UserListPage />
       </div>
     </PageContainer>
   );
