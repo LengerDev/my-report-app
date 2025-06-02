@@ -1,3 +1,31 @@
+type Payment = {
+  id: string;
+  amount: number;
+  status: "pending" | "processing" | "success" | "failed";
+  email: string;
+  image: string;
+};
+
+export const payments: Payment[] = [
+  {
+    id: "728ed52f",
+    amount: 100,
+    status: "pending",
+    email: "m@example.com",
+    image:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Mastercard_2019_logo.svg/640px-Mastercard_2019_logo.svg.png",
+  },
+  {
+    id: "489e1d42",
+    amount: 125,
+    status: "processing",
+    email: "example@gmail.com",
+    image:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/UnionPay_logo.svg/640px-UnionPay_logo.svg.png",
+  },
+  // ...
+];
+
 export const invoices = [
   {
     invoice: "INV001",
